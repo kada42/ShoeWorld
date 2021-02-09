@@ -8,6 +8,7 @@ public class Grade {
 
     private int id;
     private String grade;
+    private int points;
 
     public int getId() {
         return id;
@@ -15,5 +16,9 @@ public class Grade {
 
     public String getGrade() {
         return grade;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

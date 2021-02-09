@@ -12,6 +12,7 @@ public class Customer {
     private String streetAddress;
     private String zipCode;
     private String city;
+    private String password;
 
     public int getMembershipNr() {
         return membershipNr;
@@ -35,5 +36,9 @@ public class Customer {
 
     public String getCity() {
         return city;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

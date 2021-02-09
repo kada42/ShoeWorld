@@ -12,6 +12,7 @@ public class Shoe {
     private String Color;
     private int priceSEK;
     private Size size;
+    private int inStock;
 
     public int getArticleNr() {
         return articleNr;
@@ -35,5 +36,9 @@ public class Shoe {
 
     public Size getSize() {
         return size;
+    }
+
+    public int getInStock() {
+        return inStock;
     }
 }

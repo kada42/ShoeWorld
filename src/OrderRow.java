@@ -7,11 +7,16 @@
 public class OrderRow {
 
     private int id;
+    private int quantity;
     private Order orderID;
     private Shoe shoeArticleNr;
 
     public int getId() {
         return id;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public Order getOrderID() {
