@@ -21,7 +21,32 @@ public class Grade {
     private List<Grade> gradeList;
 
     public Grade() {
+        queryAllData();
+    }
+
+    private Grade(int id, String grade, int points) {
+        this.id = id;
+        this.grade = grade;
+        this.points = points;
         gradeList = new ArrayList<>();
+    }
+
+    private void queryAllData() {
+        try (Connection connection = DriverManager.getConnection(DB.CONNECTION_STRING, DB.USER_NAME, DB.PASSWORD);
+             Statement statement = connection.createStatement();) {
+
+            ResultSet results = statement.executeQuery("SELECT " + COLUMN_ID + ", " + COLUMN_GRADE + ", " + COLUMN_POINTS + " FROM " + TABLE_NAME);
+            while (results.next()) {
+                id = results.getInt(COLUMN_ID);
+                grade = results.getString(COLUMN_GRADE);
+                points = results.getInt(COLUMN_POINTS);
+                //gradeList.add(new Grade(results.getInt(COLUMN_ID), results.getString(COLUMN_GRADE), results.getInt(COLUMN_POINTS)));
+                gradeList.add(new Grade(id, grade, points));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public int getId() {
@@ -36,20 +61,7 @@ public class Grade {
         return points;
     }
 
-    private void queryAllData() {
-        try (Connection connection = DriverManager.getConnection(DB.CONNECTION_STRING, DB.USER_NAME, DB.PASSWORD);
-             Statement statement = connection.createStatement();) {
-
-            //statement.execute("SELECT * FROM " + TABLE_NAME);
-
-            ResultSet results = statement.executeQuery("SELECT " + COLUMN_ID + ", " + COLUMN_GRADE + ", " + COLUMN_POINTS + " FROM " + TABLE_NAME);
-            while (results.next()) {
-                gradeList.add(results.getInt(COLUMN_ID), results.getString(COLUMN_GRADE), results.getInt(COLUMN_POINTS));
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public List<Grade> getGradeList() {
+        return gradeList;
     }
-
 }
