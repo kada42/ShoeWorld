@@ -2,7 +2,6 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * Created by Tomas Dahlander <br>
@@ -19,23 +18,37 @@ public class Window extends JPanel {
 
     // Textareas
     private final JTextArea infoWindow = new JTextArea();
-    private final JScrollPane sp = new JScrollPane(infoWindow);
+    private final JScrollPane spWindow = new JScrollPane(infoWindow);
+    private final JTextArea commentGradeArea = new JTextArea(2,30);
+    private final JScrollPane spComment = new JScrollPane(commentGradeArea);
+
 
     // Buttons
     private final JButton allShoes = new JButton("View all shoes");
-    private final JButton allCategories = new JButton("View with categories");
+    private final JButton allCategories = new JButton("View all shoes with categories");
     private final JButton addToCart = new JButton("Add to cart");
+    private final JButton sendGrade = new JButton("Send grade");
 
     // Textfields
-    private final JTextField articleNrField = new JTextField(15);
-    private final JTextField orderNrField = new JTextField(15);
+    private final JTextField articleNrFieldCartAdd = new JTextField(10);
+    private final JTextField orderNrFieldCartAdd = new JTextField(10);
+    private final JTextField articleNrFieldGrade = new JTextField(10);
+    private final JTextField checkArticleNrField = new JTextField(10);
+
+    // Labels
+    private final JLabel name = new JLabel("Hej name...");
+
+    // Font
+    Font font = new Font(Font.SERIF,Font.BOLD,20);
 
     public Window(){
         this.setLayout(new BorderLayout());
         addPanels();
-        setUpEastSide();
+        setUpNorthBar();
         setUpSouthBar();
+        setUpEastSide();
         setUpNorthWestSide();
+        setUpSouthWestSide();
     }
 
     private void addPanels(){
@@ -49,14 +62,28 @@ public class Window extends JPanel {
         west.add(northWest);
         west.add(southWest);
 
-        east.setBackground(Color.BLUE);
+        east.setBackground(Color.GREEN);
         southWest.setBackground(Color.RED);
     }
 
     private void setUpEastSide(){
-        sp.setPreferredSize(new Dimension(400,700));
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        east.add(sp);
+        spWindow.setPreferredSize(new Dimension(400,700));
+        spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        east.add(spWindow);
+    }
+
+    private void setUpNorthBar(){
+        name.setBackground(new Color(51, 82, 245));
+        name.setOpaque(true);
+        name.setFont(new Font(Font.DIALOG,Font.ITALIC,16));
+        this.add(name, BorderLayout.NORTH);
+    }
+
+    private void setUpSouthBar(){
+        JPanel panel = new JPanel();
+        panel.add(allShoes);
+        panel.add(allCategories);
+        this.add(panel, BorderLayout.SOUTH);
     }
 
     private void setUpNorthWestSide(){
@@ -68,18 +95,18 @@ public class Window extends JPanel {
 
         JPanel panel1 = new JPanel();
         JLabel articleNr = new JLabel("Article nr");
-        articleNr.setFont(new Font(Font.SERIF,Font.BOLD,20));
-        articleNrField.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        articleNr.setFont(font);
+        articleNrFieldCartAdd.setFont(font);
         panel1.add(articleNr);
-        panel1.add(articleNrField);
+        panel1.add(articleNrFieldCartAdd);
         middle.add(panel1);
 
         JPanel panel2 = new JPanel();
-        JLabel orderNr = new JLabel("Order nr");
-        orderNr.setFont(new Font(Font.SERIF,Font.BOLD,20));
-        orderNrField.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        JLabel orderNr = new JLabel(" Order nr");
+        orderNr.setFont(font);
+        orderNrFieldCartAdd.setFont(font);
         panel2.add(orderNr);
-        panel2.add(orderNrField);
+        panel2.add(orderNrFieldCartAdd);
         middle.add(panel2);
 
         northWest.add(middle);
@@ -92,14 +119,39 @@ public class Window extends JPanel {
     }
 
     private void setUpSouthWestSide(){
-        // fortsätt här och gör liknande som ovan
-    }
+        JPanel topPanel = new JPanel(new GridLayout(4,1));
 
-    private void setUpSouthBar(){
-        JPanel panel = new JPanel();
-        panel.add(allShoes);
-        panel.add(allCategories);
-        this.add(panel, BorderLayout.SOUTH);
+        JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
+        grade.setFont(new Font(Font.SERIF,Font.BOLD,16));
+
+        JPanel panel1 = new JPanel();
+        JLabel articleNr = new JLabel("Article nr");
+        articleNr.setFont(font);
+        panel1.add(articleNr);
+        articleNrFieldGrade.setFont(font);
+        panel1.add(articleNrFieldGrade);
+
+        topPanel.add(grade);
+        topPanel.add(panel1);
+
+        JPanel panel2 = new JPanel();
+        JLabel comment = new JLabel("Comment");
+        comment.setFont(font);
+        panel2.add(comment);
+        spComment.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        panel2.add(spComment);
+        topPanel.add(panel2);
+
+        JPanel panel3 = new JPanel();
+        panel3.add(sendGrade);
+        topPanel.add(panel3);
+
+        southWest.add(topPanel);
+
+        JPanel lowPanel = new JPanel(new GridLayout(4,1));
+
+        // Fortsätt här med att lägga till saker för den andra halvan av den nedersta. (röda)
+
     }
 
 }
