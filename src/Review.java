@@ -8,6 +8,7 @@ public class Review {
 
     private int id;
     private String reviewText;
+    private Shoe shoeArticleNr;
     private Customer customerID;
     private Grade gradeID;
 
@@ -17,6 +18,10 @@ public class Review {
 
     public String getReviewText() {
         return reviewText;
+    }
+
+    public Shoe getShoeArticleNr() {
+        return shoeArticleNr;
     }
 
     public Customer getCustomerID() {
