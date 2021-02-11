@@ -15,7 +15,7 @@ public class Window extends JPanel {
     // Panels
     private final JPanel east = new JPanel();
     private final JPanel northWest = new JPanel(new GridLayout(3,1));
-    private final JPanel southWest = new JPanel();
+    private final JPanel southWest = new JPanel(new GridLayout(2,1));
 
     // Textareas
     private final JTextArea infoWindow = new JTextArea();
@@ -24,9 +24,11 @@ public class Window extends JPanel {
     // Buttons
     private final JButton allShoes = new JButton("View all shoes");
     private final JButton allCategories = new JButton("View with categories");
+    private final JButton addToCart = new JButton("Add to cart");
 
     // Textfields
-    private final JTextField articleNrField = new JTextField(20);
+    private final JTextField articleNrField = new JTextField(15);
+    private final JTextField orderNrField = new JTextField(15);
 
     public Window(){
         this.setLayout(new BorderLayout());
@@ -48,7 +50,6 @@ public class Window extends JPanel {
         west.add(southWest);
 
         east.setBackground(Color.BLUE);
-        northWest.setBackground(Color.GREEN);
         southWest.setBackground(Color.RED);
     }
 
@@ -59,17 +60,39 @@ public class Window extends JPanel {
     }
 
     private void setUpNorthWestSide(){
-        JLabel placeOrder = new JLabel("Place order");
-        placeOrder.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        JLabel placeOrder = new JLabel("Place order", SwingConstants.CENTER);
+        placeOrder.setFont(new Font(Font.SERIF,Font.BOLD,50));
         northWest.add(placeOrder);
+
+        JPanel middle = new JPanel(new GridLayout(2,1));
 
         JPanel panel1 = new JPanel();
         JLabel articleNr = new JLabel("Article nr");
-        panel1.add(articleNr, CENTER_ALIGNMENT);
+        articleNr.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        articleNrField.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        panel1.add(articleNr);
         panel1.add(articleNrField);
-        northWest.add(panel1);
+        middle.add(panel1);
 
+        JPanel panel2 = new JPanel();
+        JLabel orderNr = new JLabel("Order nr");
+        orderNr.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        orderNrField.setFont(new Font(Font.SERIF,Font.BOLD,20));
+        panel2.add(orderNr);
+        panel2.add(orderNrField);
+        middle.add(panel2);
 
+        northWest.add(middle);
+
+        JPanel panel3 = new JPanel();
+        addToCart.setFont(new Font(Font.SERIF,Font.BOLD,40));
+        panel3.add(addToCart);
+
+        northWest.add(panel3);
+    }
+
+    private void setUpSouthWestSide(){
+        // fortsätt här och gör liknande som ovan
     }
 
     private void setUpSouthBar(){
