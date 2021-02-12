@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 
 /**
@@ -87,6 +88,7 @@ public class Window extends JPanel {
     }
 
     private void setUpNorthWestSide(){
+        northWest.setBorder(new EtchedBorder());
         JLabel placeOrder = new JLabel("Place order", SwingConstants.CENTER);
         placeOrder.setFont(new Font(Font.SERIF,Font.BOLD,50));
         northWest.add(placeOrder);
@@ -120,6 +122,7 @@ public class Window extends JPanel {
 
     private void setUpSouthWestSide(){
         JPanel topPanel = new JPanel(new GridLayout(4,1));
+        topPanel.setBorder(new EtchedBorder());
 
         JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
         grade.setFont(new Font(Font.SERIF,Font.BOLD,16));
@@ -149,6 +152,7 @@ public class Window extends JPanel {
         southWest.add(topPanel);
 
         JPanel lowPanel = new JPanel(new GridLayout(4,1));
+        lowPanel.setBorder(new EtchedBorder());
 
         JLabel checkAveGrade = new JLabel("Check average grade", SwingConstants.CENTER);
         checkAveGrade.setFont(new Font(Font.SERIF,Font.BOLD,16));
