@@ -21,6 +21,8 @@ public class Window extends JPanel {
     private final JScrollPane spWindow = new JScrollPane(infoWindow);
     private final JTextArea commentGradeArea = new JTextArea(2,30);
     private final JScrollPane spComment = new JScrollPane(commentGradeArea);
+    private final JTextArea searchCommentGradeArea = new JTextArea(2,30);
+    private final JScrollPane spSearchComment = new JScrollPane(searchCommentGradeArea);
 
 
     // Buttons
@@ -28,6 +30,7 @@ public class Window extends JPanel {
     private final JButton allCategories = new JButton("View all shoes with categories");
     private final JButton addToCart = new JButton("Add to cart");
     private final JButton sendGrade = new JButton("Send grade");
+    private final JButton searchAveGrade = new JButton("Check grade");
 
     // Textfields
     private final JTextField articleNrFieldCartAdd = new JTextField(10);
@@ -61,9 +64,6 @@ public class Window extends JPanel {
 
         west.add(northWest);
         west.add(southWest);
-
-        east.setBackground(Color.GREEN);
-        southWest.setBackground(Color.RED);
     }
 
     private void setUpEastSide(){
@@ -73,7 +73,7 @@ public class Window extends JPanel {
     }
 
     private void setUpNorthBar(){
-        name.setBackground(new Color(51, 82, 245));
+        name.setBackground(new Color(76, 103, 246));
         name.setOpaque(true);
         name.setFont(new Font(Font.DIALOG,Font.ITALIC,16));
         this.add(name, BorderLayout.NORTH);
@@ -124,33 +124,61 @@ public class Window extends JPanel {
         JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
         grade.setFont(new Font(Font.SERIF,Font.BOLD,16));
 
-        JPanel panel1 = new JPanel();
+        JPanel high1 = new JPanel();
         JLabel articleNr = new JLabel("Article nr");
         articleNr.setFont(font);
-        panel1.add(articleNr);
+        high1.add(articleNr);
         articleNrFieldGrade.setFont(font);
-        panel1.add(articleNrFieldGrade);
+        high1.add(articleNrFieldGrade);
 
         topPanel.add(grade);
-        topPanel.add(panel1);
+        topPanel.add(high1);
 
-        JPanel panel2 = new JPanel();
+        JPanel high2 = new JPanel();
         JLabel comment = new JLabel("Comment");
         comment.setFont(font);
-        panel2.add(comment);
+        high2.add(comment);
         spComment.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panel2.add(spComment);
-        topPanel.add(panel2);
+        high2.add(spComment);
+        topPanel.add(high2);
 
-        JPanel panel3 = new JPanel();
-        panel3.add(sendGrade);
-        topPanel.add(panel3);
+        JPanel high3 = new JPanel();
+        high3.add(sendGrade);
+        topPanel.add(high3);
 
         southWest.add(topPanel);
 
         JPanel lowPanel = new JPanel(new GridLayout(4,1));
 
-        // Fortsätt här med att lägga till saker för den andra halvan av den nedersta. (röda)
+        JLabel checkAveGrade = new JLabel("Check average grade", SwingConstants.CENTER);
+        checkAveGrade.setFont(new Font(Font.SERIF,Font.BOLD,16));
+        lowPanel.add(checkAveGrade);
+        southWest.add(lowPanel);
+
+        JPanel low1 = new JPanel();
+        JLabel articleNr2 = new JLabel("Article nr");
+        articleNr2.setFont(font);
+        low1.add(articleNr2);
+        checkArticleNrField.setFont(font);
+        low1.add(checkArticleNrField);
+        lowPanel.add(low1);
+
+        JPanel low2 = new JPanel();
+        JLabel aveGrade = new JLabel("Average grade: ");
+        JLabel aveGradeScore = new JLabel("Show score here");
+        low2.add(aveGrade);
+        low2.add(aveGradeScore);
+        low2.add(searchAveGrade);
+        lowPanel.add(low2);
+
+        JPanel low3 = new JPanel();
+        JLabel searchComment = new JLabel("Comment");
+        searchComment.setFont(font);
+        low3.add(searchComment);
+        spSearchComment.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        low3.add(spSearchComment);
+
+        lowPanel.add(low3);
 
     }
 
