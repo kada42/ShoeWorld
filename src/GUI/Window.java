@@ -186,4 +186,55 @@ public class Window extends JPanel {
 
     }
 
+    public JTextArea getInfoWindow() {
+        return infoWindow;
+    }
+
+    public JTextArea getCommentGradeArea() {
+        return commentGradeArea;
+    }
+
+    public JTextArea getSearchCommentGradeArea() {
+        return searchCommentGradeArea;
+    }
+
+    public JButton getAllShoes() {
+        return allShoes;
+    }
+
+    public JButton getAllCategories() {
+        return allCategories;
+    }
+
+    public JButton getAddToCart() {
+        return addToCart;
+    }
+
+    public JButton getSendGrade() {
+        return sendGrade;
+    }
+
+    public JButton getSearchAveGrade() {
+        return searchAveGrade;
+    }
+
+    public JTextField getArticleNrFieldCartAdd() {
+        return articleNrFieldCartAdd;
+    }
+
+    public JTextField getOrderNrFieldCartAdd() {
+        return orderNrFieldCartAdd;
+    }
+
+    public JTextField getArticleNrFieldGrade() {
+        return articleNrFieldGrade;
+    }
+
+    public JTextField getCheckArticleNrField() {
+        return checkArticleNrField;
+    }
+
+    public JLabel getNameLabel() {
+        return name;
+    }
 }
