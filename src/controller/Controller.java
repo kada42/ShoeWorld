@@ -26,17 +26,18 @@ public class Controller {
     public void setUpShoeSearchButtonListener(){
         w.getAllShoes().addActionListener(l -> {
             ResultSet result = db.displayShoes();
-            w.getInfoWindow().setText("");
+            w.getInfoWindow().setText("Article nr |   Brand   |   Item name   | Color | Size | In stock\n");
             try {
                 while (result.next()) {
                     w.getInfoWindow().append(
-                            result.getString("article_nr") + " " +
-                            result.getString("brand") + " " +
-                            result.getString("item_name") + " " +
-                            result.getString("color") + " " +
-                            result.getString("size") + " " +
-                            result.getString("in_stock") + "\n");
+                            String.format("%s12 %s8 %s15 %s7 %s5 %s5 \n" , result.getString("article_nr"),
+                            result.getString("brand"),
+                            result.getString("item_name"),
+                            result.getString("color"),
+                            result.getString("size"),
+                            result.getString("in_stock")));
                 }
+                result.close();
                 /*
                 select article_nr, b.brand, item_name, color, si.size, in_stock
                 System.out.println(counter + ": " + results.getString(COLUMN_NAME) + ", " +

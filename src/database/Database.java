@@ -61,18 +61,10 @@ public class Database {
     }
 
     public ResultSet displayShoes(){
-        try(Connection con = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-            Statement x = con.createStatement()) {
-
-            ResultSet results = x.executeQuery("SELECT article_nr, brand, item_name, color, size, in_stock " +
+        try {
+            ResultSet results = statement.executeQuery("SELECT article_nr, brand, item_name, color, size, in_stock " +
                     "FROM shoe_search;");
 
-            while(results.next()){
-                System.out.println(results.getString("article_nr"));
-            }
-            
-            statement.close();
-            results.close();
             return results;
             /*
             create or replace view shoe_search as
