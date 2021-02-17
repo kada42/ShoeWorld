@@ -21,16 +21,20 @@ public class Controller {
         this.w = window;
         db = new Database();
         setUpShoeSearchButtonListener();
+        setUpAllCategorySearchListener();
+        setUpAddToCartListener();
     }
 
     public void setUpShoeSearchButtonListener(){
         w.getAllShoes().addActionListener(l -> {
             ResultSet result = db.displayShoes();
-            w.getInfoWindow().setText("Article nr |   Brand   |   Item name   | Color | Size | In stock\n");
+
+            w.getInfoWindow().setText("Article nr | Brand  | Item name   | Color | Size | In stock\n");
             try {
                 while (result.next()) {
                     w.getInfoWindow().append(
-                            String.format("%s12 %s8 %s15 %s7 %s5 %s5 \n" , result.getString("article_nr"),
+                        String.format("%-13s %-9s %-14s %-8s %-7s %-8s \n",
+                            result.getString("article_nr"),
                             result.getString("brand"),
                             result.getString("item_name"),
                             result.getString("color"),
@@ -38,16 +42,45 @@ public class Controller {
                             result.getString("in_stock")));
                 }
                 result.close();
-                /*
-                select article_nr, b.brand, item_name, color, si.size, in_stock
-                System.out.println(counter + ": " + results.getString(COLUMN_NAME) + ", " +
-                    results.getInt(COLUMN_SCORE));
-                 */
-
             }catch(SQLException e){
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
+        });
+    }
+
+    public void setUpAllCategorySearchListener(){
+        w.getAllCategories().addActionListener(l -> {
+            ResultSet result = db.displayShoesWithCategories();
+
+            w.getInfoWindow().setText("Category | Article nr | Brand  | Item name   | Color | Size | In stock\n");
+            try {
+                while (result.next()) {
+                    w.getInfoWindow().append(
+                        String.format("%-11s %-13s %-9s %-14s %-8s %-7s %-8s \n",
+                            result.getString("category"),
+                            result.getString("article_nr"),
+                            result.getString("brand"),
+                            result.getString("item_name"),
+                            result.getString("color"),
+                            result.getString("size"),
+                            result.getString("in_stock")));
+                }
+                result.close();
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void setUpAddToCartListener(){
+        w.getAddToCart().addActionListener(l -> {
+            int articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
+            int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
+            db.addToCart(1,articleNr,orderNr);
+
+            w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
         });
     }
 

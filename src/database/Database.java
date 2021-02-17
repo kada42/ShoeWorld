@@ -19,6 +19,11 @@ public class Database {
     private static final String USER_NAME = "testuser";
     private static final String PASSWORD = "testuser";
 
+    // Test data
+    int membershipNr = 1;
+    int articleNr = 2021040;
+    int orderNr = 13;
+
     Connection connection;
     Statement statement;
 
@@ -34,8 +39,19 @@ public class Database {
 
     }
 
-    public void addToCart(int customerID, String shoeArticleNr, int orderID){
+    public void addToCart(int customerID, int shoeArticleNr, int orderID){
+        try {
+            // AddToCart(customerID int, shoeID int, orderID int)
+            CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");
+            cstmt.setInt(1,membershipNr);
+            cstmt.setInt(2,articleNr);
+            cstmt.setInt(3,orderNr);
 
+            cstmt.execute();
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public List<String> checkCart(){
@@ -55,9 +71,31 @@ public class Database {
         return message;
     }
 
-    public String getLatestOrderNr(){
+    public String getLatestOrderNr(){   // måste testas i samband med "addToCart"
+        try{
+//            Preparing a CallableStatement to call a function
+//            CallableStatement cstmt = con.prepareCall("{? = call getDob(?)}");
+            CallableStatement cstmt = connection.prepareCall("{? = call getLatestOrderNr()}");
 
-        return "";
+//            Registering the out parameter of the function (return type)
+//            cstmt.registerOutParameter(1, Types.DATE);
+            cstmt.registerOutParameter(1, Types.INTEGER);
+
+//            Setting the input parameters of the function
+//            cstmt.setString(2, "Amit");
+
+//            Executing the statement
+//            cstmt.execute();
+            cstmt.execute();
+
+//            System.out.print("Date of birth: "+cstmt.getDate(1));
+            System.out.println("Latest order id = " + cstmt.getInt(1));
+            return cstmt.getString(1);
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return "1337"; // Test siffra
+        }
     }
 
     public ResultSet displayShoes(){
@@ -66,19 +104,21 @@ public class Database {
                     "FROM shoe_search;");
 
             return results;
-            /*
-            create or replace view shoe_search as
-            select article_nr, b.brand, item_name, color, si.size, in_stock
-            from shoes s
-            join brands b on b.id = s.brand_id
-            join sizes si on si.id = s.size_id
-            order by article_nr;
-             */
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            return null;
         }
+    }
 
-        return null;
+    public ResultSet displayShoesWithCategories(){
+        try{
+            ResultSet results = statement.executeQuery("SELECT category, article_nr, brand, item_name, color, size, in_stock " +
+                    "FROM category_search;");
+            return results;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 }
