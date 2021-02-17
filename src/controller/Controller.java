@@ -16,6 +16,7 @@ public class Controller {
 
     Window w;
     Database db;
+    int membershipNr;
 
     public Controller(Window window){
         this.w = window;
@@ -23,6 +24,14 @@ public class Controller {
         setUpShoeSearchButtonListener();
         setUpAllCategorySearchListener();
         setUpAddToCartListener();
+    }
+
+    public boolean checkCredentials(int _membershipNr, String _password){
+        return db.checkCredentials(_membershipNr, _password);
+    }
+
+    public void setMembershipNr(int membershipNr){
+        this.membershipNr = membershipNr;
     }
 
     public void setUpShoeSearchButtonListener(){

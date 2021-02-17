@@ -20,6 +20,18 @@ public class GuiFrame extends JFrame {
         this.add(window);
 
         // Inlogg via JOption Pane
+        int membershipNr = 0;
+        String password = "";
+
+        while(true){
+            membershipNr = Integer.parseInt(JOptionPane.showInputDialog("Ange erat medlemsnummer:"));
+            password = JOptionPane.showInputDialog("Ange erat lösenord:");
+            boolean correctPassword = c.checkCredentials(membershipNr,password);
+            if(correctPassword) {
+                c.setMembershipNr(membershipNr);
+                break;
+            }
+        }
 
         setUpFrame();
     }

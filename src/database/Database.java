@@ -20,9 +20,9 @@ public class Database {
     private static final String PASSWORD = "testuser";
 
     // Test data
-    int membershipNr = 1;
-    int articleNr = 2021040;
-    int orderNr = 13;
+    int membershipNrTest = 1;
+    int articleNrTest = 2021040;
+    int orderNrTest = 13;
 
     Connection connection;
     Statement statement;
@@ -39,13 +39,26 @@ public class Database {
 
     }
 
+    public boolean checkCredentials(int _membershipNr, String _password){
+
+        try{
+            ResultSet result = statement.executeQuery("SELECT password FROM customers WHERE membership_nr = " +_membershipNr);
+            return result.getString("password").equals(_password);
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void addToCart(int customerID, int shoeArticleNr, int orderID){
         try {
             // AddToCart(customerID int, shoeID int, orderID int)
             CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");
-            cstmt.setInt(1,membershipNr);
-            cstmt.setInt(2,articleNr);
-            cstmt.setInt(3,orderNr);
+            cstmt.setInt(1, membershipNrTest);
+            cstmt.setInt(2, articleNrTest);
+            cstmt.setInt(3, orderNrTest);
 
             cstmt.execute();
 
