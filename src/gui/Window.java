@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -23,8 +23,6 @@ public class Window extends JPanel {
     private final JTextArea commentGradeArea = new JTextArea(2,30);
     private final JScrollPane spComment = new JScrollPane(commentGradeArea);
     private final JTextArea searchCommentGradeArea = new JTextArea(2,30);
-    private final JScrollPane spSearchComment = new JScrollPane(searchCommentGradeArea);
-
 
     // Buttons
     private final JButton allShoes = new JButton("View all shoes");
@@ -32,6 +30,7 @@ public class Window extends JPanel {
     private final JButton addToCart = new JButton("Add to cart");
     private final JButton sendGrade = new JButton("Send grade");
     private final JButton searchAveGrade = new JButton("Check grade");
+    private final JButton viewCart = new JButton("View cart");
 
     // Textfields
     private final JTextField articleNrFieldCartAdd = new JTextField(10);
@@ -41,6 +40,7 @@ public class Window extends JPanel {
 
     // Labels
     private final JLabel name = new JLabel("Hej name...");
+    private final JLabel aveGradeScore = new JLabel("0");
 
     // Font
     Font font = new Font(Font.SERIF,Font.BOLD,20);
@@ -69,7 +69,7 @@ public class Window extends JPanel {
     }
 
     private void setUpEastSide(){
-        spWindow.setPreferredSize(new Dimension(400,720));
+        spWindow.setPreferredSize(new Dimension(400,700));
         spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         east.add(spWindow);
     }
@@ -118,6 +118,7 @@ public class Window extends JPanel {
         JPanel panel3 = new JPanel();
         addToCart.setFont(new Font(Font.SERIF,Font.BOLD,40));
         panel3.add(addToCart);
+        panel3.add(viewCart);
 
         northWest.add(panel3);
     }
@@ -151,7 +152,7 @@ public class Window extends JPanel {
 
         southWest.add(topPanel);
 
-        JPanel lowPanel = new JPanel(new GridLayout(4,1));
+        JPanel lowPanel = new JPanel(new GridLayout(3,1));
         lowPanel.setBorder(new EtchedBorder());
 
         JLabel checkAveGrade = new JLabel("Check average grade", SwingConstants.CENTER);
@@ -171,20 +172,10 @@ public class Window extends JPanel {
         JPanel low2 = new JPanel();
         JLabel aveGrade = new JLabel("Average grade: ");
         aveGrade.setFont(font);
-        JLabel aveGradeScore = new JLabel("Show score here");
         aveGradeScore.setFont(font);
         low2.add(aveGrade);
         low2.add(aveGradeScore);
         lowPanel.add(low2);
-
-        JPanel low3 = new JPanel();
-        JLabel searchComment = new JLabel("Comment");
-        searchComment.setFont(font);
-        low3.add(searchComment);
-        spSearchComment.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        low3.add(spSearchComment);
-
-        lowPanel.add(low3);
 
     }
 
@@ -238,5 +229,9 @@ public class Window extends JPanel {
 
     public JLabel getNameLabel() {
         return name;
+    }
+
+    public JLabel getAveGradeScore() {
+        return aveGradeScore;
     }
 }

@@ -1,4 +1,6 @@
-package GUI;
+package gui;
+
+import controller.Controller;
 
 import javax.swing.*;
 
@@ -11,8 +13,10 @@ import javax.swing.*;
 public class GuiFrame extends JFrame {
 
     Window window = new Window();
+    Controller c;
 
     public GuiFrame(){
+        c = new Controller(window);
         this.add(window);
         setUpFrame();
     }
