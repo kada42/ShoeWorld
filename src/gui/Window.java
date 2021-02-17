@@ -106,7 +106,7 @@ public class Window extends JPanel {
         middle.add(panel1);
 
         JPanel panel2 = new JPanel();
-        JLabel orderNr = new JLabel(" Order nr");
+        JLabel orderNr = new JLabel("Order nr");
         orderNr.setFont(font);
         orderNrFieldCartAdd.setFont(font);
         panel2.add(orderNr);

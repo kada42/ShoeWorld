@@ -1,3 +1,5 @@
+package models;
+
 /**
  * Created by Karl Danielsson - JAVA 20B
  * Date: 2021-02-08

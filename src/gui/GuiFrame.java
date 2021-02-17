@@ -18,6 +18,9 @@ public class GuiFrame extends JFrame {
     public GuiFrame(){
         c = new Controller(window);
         this.add(window);
+
+        // Inlogg via JOption Pane
+
         setUpFrame();
     }
 
