@@ -15,7 +15,7 @@ import java.util.List;
 public class Database {
 
     private static final String DB_NAME = "shoe_worlddb2";
-    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/shoe_worlddb2?serverTimezone UTC&useSSL =false";
+    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/shoe_worlddb2?serverTimezone=UTC&useSSL=false";
     private static final String USER_NAME = "testuser";
     private static final String PASSWORD = "testuser";
 
