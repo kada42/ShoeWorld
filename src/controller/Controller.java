@@ -2,9 +2,9 @@ package controller;
 
 import database.Database;
 import gui.Window;
+import models.ShoeView;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Tomas Dahlander <br>
@@ -36,50 +36,38 @@ public class Controller {
 
     public void setUpShoeSearchButtonListener(){
         w.getAllShoes().addActionListener(l -> {
-            ResultSet result = db.displayShoes();
+            List<ShoeView> list = db.displayShoes();
 
             w.getInfoWindow().setText("Article nr | Brand  | Item name   | Color | Size | In stock\n");
-            try {
-                while (result.next()) {
+                for (ShoeView i : list){
                     w.getInfoWindow().append(
-                        String.format("%-12s %-8s %-13s %-7s %-6s %-6s \n",
-                            result.getString("article_nr"),
-                            result.getString("brand"),
-                            result.getString("item_name"),
-                            result.getString("color"),
-                            result.getString("size"),
-                            result.getString("in_stock")));
+                        String.format("%-12d %-8s %-13s %-7s %-6d %-6d \n",
+                            i.getArticleNr(),
+                            i.getBrand(),
+                            i.getItemName(),
+                            i.getColor(),
+                            i.getSize(),
+                            i.getCurrentStock()));
                 }
-                result.close();
-            }catch(SQLException e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
         });
     }
 
     public void setUpAllCategorySearchListener(){
         w.getAllCategories().addActionListener(l -> {
-            ResultSet result = db.displayShoesWithCategories();
+            List<ShoeView> list = db.displayShoesWithCategories();
 
             w.getInfoWindow().setText("Category | Article nr | Brand  | Item name   | Color | Size | In stock\n");
-            try {
-                while (result.next()) {
+                for (ShoeView i : list) {
                     w.getInfoWindow().append(
                         String.format("%-10s %-12s %-8s %-13s %-7s %-6s %-6s \n",
-                            result.getString("category"),
-                            result.getString("article_nr"),
-                            result.getString("brand"),
-                            result.getString("item_name"),
-                            result.getString("color"),
-                            result.getString("size"),
-                            result.getString("in_stock")));
+                            i.getCategory(),
+                            i.getArticleNr(),
+                            i.getBrand(),
+                            i.getItemName(),
+                            i.getColor(),
+                            i.getSize(),
+                            i.getCurrentStock()));
                 }
-                result.close();
-            }catch(SQLException e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
         });
     }
 

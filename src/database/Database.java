@@ -1,10 +1,15 @@
 package database;
 
 import models.Message;
+import models.ShoeView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Tomas Dahlander <br>
@@ -15,51 +20,72 @@ import java.util.List;
 public class Database {
 
     private static final String DB_NAME = "shoe_worlddb2";
-    private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/shoe_worlddb2?serverTimezone=UTC&useSSL=false";
-    private static final String USER_NAME = "testuser";
-    private static final String PASSWORD = "testuser";
+    private static String CONNECTION_STRING;
+    private static String USER_NAME;
+    private static String PASSWORD;
 
     // Test data
-    int membershipNrTest = 1;
     int articleNrTest = 2021040;
     int orderNrTest = 13;
 
-//    Connection connection;
-//    Statement statement;
-
+    /**
+     * Constructor that reads in database login credentials from a properties file.
+     */
     public Database(){
-//        try {
-//            Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-//            Statement statement = connection.createStatement();
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            Properties p = new Properties();
+            p.load(new FileInputStream("src/Properties.properties"));
 
+            CONNECTION_STRING = p.getProperty("CONNECTION_STRING","fel1");
+            USER_NAME = p.getProperty("USER_NAME","fel2");
+            PASSWORD = p.getProperty("PASSWORD","fel3");
+
+        }catch(FileNotFoundException e){
+            System.out.println("******************ERROR********************");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.out.println("******************ERROR********************");
+        }catch(IOException e){
+            System.out.println("******************ERROR********************");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.out.println("******************ERROR********************");
+        }
     }
 
+    /**
+     * Method that check in the database if the password is correct for a given membership number
+     * @param _membershipNr selfexplanatory
+     * @param _password selfexplanatory
+     * @return boolean isCorrect
+     */
     public boolean checkCredentials(int _membershipNr, String _password){
-
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();){
+             PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?)")){
 
-            ResultSet result = statement.executeQuery("SELECT password FROM customers WHERE membership_nr = " +_membershipNr);
-            return result.getString("password").equalsIgnoreCase(_password);
+            statement.setInt(1,_membershipNr);
+            statement.setString(2,_password);
+            ResultSet result = statement.executeQuery();
 
+            result.next();
+            boolean isCorrect = result.getBoolean(1);
+
+            result.close();
+            return isCorrect;
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return true;
+            return false;
         }
     }
 
-    public void addToCart(int customerID, int shoeArticleNr, int orderID){
+    public void addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");) {
             // AddToCart(customerID int, shoeID int, orderID int)
 
-            cstmt.setInt(1, membershipNrTest);
+            cstmt.setInt(1, membershipNr);
             cstmt.setInt(2, articleNrTest);
             cstmt.setInt(3, orderNrTest);
 
@@ -108,6 +134,7 @@ public class Database {
         return message;
     }
 
+    // Fixa denna function som login grejen
     public String getLatestOrderNr(){   // måste testas i samband med "addToCart"
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("{? = call getLatestOrderNr()}");){
@@ -136,27 +163,61 @@ public class Database {
         }
     }
 
-    public ResultSet displayShoes(){
+    /**
+     * Method that loads a list from the database with ShoeViews objects
+     * to display in a textarea without the categories
+     * @return List<ShowView> list
+     */
+    public List<ShoeView> displayShoes(){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
 
-            return statement.executeQuery("SELECT article_nr, brand, item_name, color, size, in_stock " +
-                    "FROM shoe_search;");
+            ResultSet r = statement.executeQuery("SELECT * FROM shoe_search;");
 
-            //return results;
+            List<ShoeView> list = new ArrayList<>();
+
+            while(r.next()){
+                list.add(new ShoeView(
+                        r.getInt("article_nr"),
+                        r.getString("brand"),
+                        r.getString("item_name"),
+                        r.getString("color"),
+                        r.getInt("size"),
+                        r.getInt("in_stock")));
+            }
+            r.close();
+            return list;
         }catch(SQLException e){
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-    public ResultSet displayShoesWithCategories(){
+    /**
+     * Method that loads a list from the database with ShoeViews objects
+     * to display in a textarea with the categories to view
+     * @return List<ShowView> list
+     */
+    public List<ShoeView> displayShoesWithCategories(){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();){
+             Statement statement = connection.createStatement()){
 
-            ResultSet results = statement.executeQuery("SELECT category, article_nr, brand, item_name, color, size, in_stock " +
-                    "FROM category_search;");
-            return results;
+            ResultSet result = statement.executeQuery("SELECT * FROM category_search;");
+
+            List<ShoeView> list = new ArrayList<>();
+
+            while(result.next()){
+                list.add(new ShoeView(
+                        result.getString("category"),
+                        result.getInt("article_nr"),
+                        result.getString("brand"),
+                        result.getString("item_name"),
+                        result.getString("color"),
+                        result.getInt("size"),
+                        result.getInt("in_stock")));
+            }
+            result.close();
+            return list;
         }catch (SQLException e){
             System.out.println(e.getMessage());
             return null;
@@ -164,17 +225,3 @@ public class Database {
     }
 
 }
-/*
-ResultSet results = statement.executeQuery("SELECT " + COLUMN_NAME + ", " + COLUMN_SCORE +
-                " FROM " + TABLE_NAME +
-                " ORDER BY " + COLUMN_SCORE +
-                " LIMIT 5;");
-
-        System.out.println("\nWorld leaderboard (fewest turns): ");
-        while (results.next()) {
-            System.out.println(counter + ": " + results.getString(COLUMN_NAME) + ", " +
-                    results.getInt(COLUMN_SCORE));
-            counter++;
-        }
-        results.close();
- */

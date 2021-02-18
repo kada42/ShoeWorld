@@ -6,17 +6,17 @@ package models;
  * Time: 12:54 <br>
  * Project: ShoeWorld <br>
  */
-public class View {
+public class ShoeView {
 
-    private String category;
-    private int articleNr;
-    private String brand;
-    private String itemName;
-    private String color;
-    private int size;
-    private int currentStock;
+    private final String category;
+    private final int articleNr;
+    private final String brand;
+    private final String itemName;
+    private final String color;
+    private final int size;
+    private final int currentStock;
 
-    public View(String category, int articleNr, String brand, String itemName, String color, int size, int currentStock) {
+    public ShoeView(String category, int articleNr, String brand, String itemName, String color, int size, int currentStock) {
         this.category = category;
         this.articleNr = articleNr;
         this.brand = brand;
@@ -26,7 +26,8 @@ public class View {
         this.currentStock = currentStock;
     }
 
-    public View(int articleNr, String brand, String itemName, String color, int size, int currentStock) {
+    public ShoeView(int articleNr, String brand, String itemName, String color, int size, int currentStock) {
+        this.category = null;
         this.articleNr = articleNr;
         this.brand = brand;
         this.itemName = itemName;

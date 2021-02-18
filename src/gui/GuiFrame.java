@@ -19,20 +19,27 @@ public class GuiFrame extends JFrame {
         c = new Controller(window);
         this.add(window);
 
-        // Inlogg via JOption Pane
         int membershipNr = 0;
         String password = "";
 
         while(true){
-            membershipNr = Integer.parseInt(JOptionPane.showInputDialog("Ange erat medlemsnummer:"));
-            password = JOptionPane.showInputDialog("Ange erat lösenord:");
-            boolean correctPassword = c.checkCredentials(membershipNr,password);
-            if(correctPassword) {
+            try {
+                String input = JOptionPane.showInputDialog("Ange erat medlemsnummer:");
+                if(input == null) System.exit(1337);
+                membershipNr = Integer.parseInt(input.trim());
+                password = JOptionPane.showInputDialog("Ange erat lösenord:");
+                if(password == null) System.exit(1337);
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Ni måste ange medlemsnummer med siffror.");
+                continue;
+            }
+            boolean isCorrectPassword = c.checkCredentials(membershipNr,password);
+            if(isCorrectPassword) {
                 c.setMembershipNr(membershipNr);
                 break;
             }
+            else JOptionPane.showMessageDialog(null,"Ni angav antingen fel medlemsnummer eller fel lösenord.");
         }
-
         setUpFrame();
     }
 
