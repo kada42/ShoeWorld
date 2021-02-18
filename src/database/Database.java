@@ -27,7 +27,6 @@ public class Database {
     Connection connection;
     Statement statement;
 
-
     public Database(){
         try {
             connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
@@ -38,8 +37,6 @@ public class Database {
         }
 
     }
-
-
 
     public boolean checkCredentials(int _membershipNr, String _password){
 
@@ -66,6 +63,7 @@ public class Database {
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
