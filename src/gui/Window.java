@@ -69,7 +69,7 @@ public class Window extends JPanel {
     }
 
     private void setUpEastSide(){
-        spWindow.setPreferredSize(new Dimension(400,700));
+        spWindow.setPreferredSize(new Dimension(500,700));
         spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         east.add(spWindow);
         infoWindow.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
