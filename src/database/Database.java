@@ -24,25 +24,28 @@ public class Database {
     int articleNrTest = 2021040;
     int orderNrTest = 13;
 
-    Connection connection;
-    Statement statement;
+//    Connection connection;
+//    Statement statement;
 
     public Database(){
-        try {
-            connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-            statement = connection.createStatement();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+//            Statement statement = connection.createStatement();
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
 
     }
 
     public boolean checkCredentials(int _membershipNr, String _password){
 
-        try{
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();){
+
             ResultSet result = statement.executeQuery("SELECT password FROM customers WHERE membership_nr = " +_membershipNr);
             return result.getString("password").equalsIgnoreCase(_password);
+
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -52,9 +55,10 @@ public class Database {
     }
 
     public void addToCart(int customerID, int shoeArticleNr, int orderID){
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");) {
             // AddToCart(customerID int, shoeID int, orderID int)
-            CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");
+
             cstmt.setInt(1, membershipNrTest);
             cstmt.setInt(2, articleNrTest);
             cstmt.setInt(3, orderNrTest);
@@ -70,25 +74,46 @@ public class Database {
     public List<String> checkCart(){
         List<String> list = new ArrayList<>();
 
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();) {
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         return list;
     }
 
     public void sendGrade(String shoeArticleNr, String comment){
+
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();) {
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
     public Message getAverageGrade(String shoeArticleNr){
         Message message = new Message();
 
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();) {
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
         return message;
     }
 
     public String getLatestOrderNr(){   // måste testas i samband med "addToCart"
-        try{
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             CallableStatement cstmt = connection.prepareCall("{? = call getLatestOrderNr()}");){
 //            Preparing a CallableStatement to call a function
 //            CallableStatement cstmt = con.prepareCall("{? = call getDob(?)}");
-            CallableStatement cstmt = connection.prepareCall("{? = call getLatestOrderNr()}");
+
 
 //            Registering the out parameter of the function (return type)
 //            cstmt.registerOutParameter(1, Types.DATE);
@@ -112,11 +137,13 @@ public class Database {
     }
 
     public ResultSet displayShoes(){
-        try {
-            ResultSet results = statement.executeQuery("SELECT article_nr, brand, item_name, color, size, in_stock " +
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();) {
+
+            return statement.executeQuery("SELECT article_nr, brand, item_name, color, size, in_stock " +
                     "FROM shoe_search;");
 
-            return results;
+            //return results;
         }catch(SQLException e){
             System.out.println(e.getMessage());
             return null;
@@ -124,7 +151,9 @@ public class Database {
     }
 
     public ResultSet displayShoesWithCategories(){
-        try{
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             Statement statement = connection.createStatement();){
+
             ResultSet results = statement.executeQuery("SELECT category, article_nr, brand, item_name, color, size, in_stock " +
                     "FROM category_search;");
             return results;
