@@ -72,6 +72,7 @@ public class Window extends JPanel {
         spWindow.setPreferredSize(new Dimension(400,700));
         spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         east.add(spWindow);
+        infoWindow.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
     }
 
     private void setUpNorthBar(){

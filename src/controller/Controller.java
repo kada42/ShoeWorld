@@ -42,7 +42,7 @@ public class Controller {
             try {
                 while (result.next()) {
                     w.getInfoWindow().append(
-                        String.format("%-13s %-9s %-14s %-8s %-7s %-8s \n",
+                        String.format("%-12s %-8s %-13s %-7s %-6s %-6s \n",
                             result.getString("article_nr"),
                             result.getString("brand"),
                             result.getString("item_name"),
@@ -66,7 +66,7 @@ public class Controller {
             try {
                 while (result.next()) {
                     w.getInfoWindow().append(
-                        String.format("%-11s %-13s %-9s %-14s %-8s %-7s %-8s \n",
+                        String.format("%-10s %-12s %-8s %-13s %-7s %-6s %-6s \n",
                             result.getString("category"),
                             result.getString("article_nr"),
                             result.getString("brand"),
