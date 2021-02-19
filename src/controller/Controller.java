@@ -39,6 +39,7 @@ public class Controller {
             List<ShoeView> list = db.displayShoes();
 
             w.getInfoWindow().setText("Article nr | Brand  | Item name   | Color | Size | In stock\n");
+            w.getInfoWindow().append("-----------------------------------------------------------\n");
                 for (ShoeView i : list){
                     w.getInfoWindow().append(
                         String.format("%-12d %-8s %-13s %-7s %-6d %-6d \n",
@@ -57,6 +58,7 @@ public class Controller {
             List<ShoeView> list = db.displayShoesWithCategories();
 
             w.getInfoWindow().setText("Category | Article nr | Brand  | Item name   | Color | Size | In stock\n");
+            w.getInfoWindow().append("----------------------------------------------------------------------\n");
                 for (ShoeView i : list) {
                     w.getInfoWindow().append(
                         String.format("%-10s %-12s %-8s %-13s %-7s %-6s %-6s \n",
@@ -74,8 +76,13 @@ public class Controller {
     public void setUpAddToCartListener(){
         w.getAddToCart().addActionListener(l -> {
             int articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
-            int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
-            db.addToCart(1,articleNr,orderNr);
+            if(w.getOrderNrFieldCartAdd().getText().isEmpty()){
+                db.addToCart(membershipNr,articleNr,0);
+            }
+            else {
+                int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
+                db.addToCart(membershipNr, articleNr, orderNr);
+            }
 
             w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
         });

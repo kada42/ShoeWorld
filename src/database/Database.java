@@ -25,7 +25,6 @@ public class Database {
     private static String PASSWORD;
 
     // Test data
-    int articleNrTest = 2021040;
     int orderNrTest = 13;
 
     /**
@@ -40,12 +39,7 @@ public class Database {
             USER_NAME = p.getProperty("USER_NAME","fel2");
             PASSWORD = p.getProperty("PASSWORD","fel3");
 
-        }catch(FileNotFoundException e){
-            System.out.println("******************ERROR********************");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            System.out.println("******************ERROR********************");
-        }catch(IOException e){
+        } catch(IOException e){
             System.out.println("******************ERROR********************");
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -80,20 +74,23 @@ public class Database {
         }
     }
 
-    public void addToCart(int membershipNr, int shoeArticleNr, int orderID){
+    public boolean addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");) {
             // AddToCart(customerID int, shoeID int, orderID int)
 
             cstmt.setInt(1, membershipNr);
-            cstmt.setInt(2, articleNrTest);
-            cstmt.setInt(3, orderNrTest);
+            cstmt.setInt(2, shoeArticleNr);
+            cstmt.setInt(3, orderID);
 
-            cstmt.execute();
+            boolean action = cstmt.execute();
+            System.out.println(action);
+            return action;
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
+            return false;
         }
     }
 

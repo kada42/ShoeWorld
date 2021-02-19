@@ -41,6 +41,7 @@ public class Window extends JPanel {
     // Labels
     private final JLabel name = new JLabel("Hej name...");
     private final JLabel aveGradeScore = new JLabel("0");
+    private final JLabel infoLabel = new JLabel("Information regarding process", SwingConstants.CENTER);
 
     // Font
     Font font = new Font(Font.SERIF,Font.BOLD,20);
@@ -116,12 +117,19 @@ public class Window extends JPanel {
 
         northWest.add(middle);
 
+        JPanel low = new JPanel(new GridLayout(2,1));
         JPanel panel3 = new JPanel();
         addToCart.setFont(new Font(Font.SERIF,Font.BOLD,40));
         panel3.add(addToCart);
         panel3.add(viewCart);
 
-        northWest.add(panel3);
+        JPanel panel4 = new JPanel();
+        panel4.add(infoLabel);
+
+        low.add(panel3);
+        low.add(panel4);
+
+        northWest.add(low);
     }
 
     private void setUpSouthWestSide(){
