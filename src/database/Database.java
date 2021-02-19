@@ -18,13 +18,9 @@ import java.util.Properties;
  */
 public class Database {
 
-    private static final String DB_NAME = "shoe_worlddb2";
     private static String CONNECTION_STRING;
     private static String USER_NAME;
     private static String PASSWORD;
-
-    // Test data
-    int orderNrTest = 13;
 
     /**
      * Constructor that reads in database login credentials from a properties file.
@@ -34,9 +30,9 @@ public class Database {
             Properties p = new Properties();
             p.load(new FileInputStream("src/Properties.properties"));
 
-            CONNECTION_STRING = p.getProperty("CONNECTION_STRING","fel1");
-            USER_NAME = p.getProperty("USER_NAME","fel2");
-            PASSWORD = p.getProperty("PASSWORD","fel3");
+            CONNECTION_STRING = p.getProperty("CONNECTION_STRING","");
+            USER_NAME = p.getProperty("USER_NAME","");
+            PASSWORD = p.getProperty("PASSWORD","");
 
         } catch(IOException e){
             System.out.println("******************ERROR********************");
@@ -54,7 +50,7 @@ public class Database {
      */
     public boolean checkCredentials(int _membershipNr, String _password){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?) AS ok;")){
+             PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?);")){
 
             statement.setInt(1,_membershipNr);
             statement.setString(2,_password);
@@ -97,6 +93,13 @@ public class Database {
         }
     }
 
+    /**
+     * Method that calls the function addToCart in database
+     * @param membershipNr int clients membership_nr
+     * @param shoeArticleNr int a shoes article_nr
+     * @param orderID int an orders order_nr
+     * @return int indicating amount of rows affected
+     */
     public int addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("Call addToCart(?,?,?);")) {
@@ -153,7 +156,10 @@ public class Database {
         return message;
     }
 
-    // Fixa denna function som login grejen
+    /**
+     * Method that checks a membership_nr towards a given password
+     * @return String of the order_nr for easier input into a textfield
+     */
     public String getLatestOrderNr(){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              PreparedStatement statement = connection.prepareStatement("SELECT getLatestOrderNr();")){
@@ -164,7 +170,7 @@ public class Database {
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
-            return "0"; // Test siffra
+            return "0"; // Wrong input that can be changed on later try
         }
     }
 
