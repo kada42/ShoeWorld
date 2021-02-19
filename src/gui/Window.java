@@ -14,7 +14,7 @@ public class Window extends JPanel {
 
     // Panels
     private final JPanel east = new JPanel();
-    private final JPanel northWest = new JPanel(new GridLayout(3,1));
+    private final JPanel northWest = new JPanel(new GridLayout(4,1));
     private final JPanel southWest = new JPanel(new GridLayout(2,1));
 
     // Textareas
@@ -74,6 +74,7 @@ public class Window extends JPanel {
         spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         east.add(spWindow);
         infoWindow.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
+        infoWindow.setEditable(false);
     }
 
     private void setUpNorthBar(){
@@ -94,7 +95,7 @@ public class Window extends JPanel {
     private void setUpNorthWestSide(){
         northWest.setBorder(new EtchedBorder());
         JLabel placeOrder = new JLabel("Place order", SwingConstants.CENTER);
-        placeOrder.setFont(new Font(Font.SERIF,Font.BOLD,50));
+        placeOrder.setFont(new Font(Font.SERIF,Font.BOLD,40));
         northWest.add(placeOrder);
 
         JPanel middle = new JPanel(new GridLayout(2,1));
@@ -108,28 +109,26 @@ public class Window extends JPanel {
         middle.add(panel1);
 
         JPanel panel2 = new JPanel();
-        JLabel orderNr = new JLabel("Order nr");
+        JLabel orderNr = new JLabel(" Order nr");
         orderNr.setFont(font);
         orderNrFieldCartAdd.setFont(font);
+        orderNrFieldCartAdd.setEditable(false);
         panel2.add(orderNr);
         panel2.add(orderNrFieldCartAdd);
         middle.add(panel2);
 
         northWest.add(middle);
 
-        JPanel low = new JPanel(new GridLayout(2,1));
+        JPanel low = new JPanel();
         JPanel panel3 = new JPanel();
         addToCart.setFont(new Font(Font.SERIF,Font.BOLD,40));
         panel3.add(addToCart);
         panel3.add(viewCart);
 
-        JPanel panel4 = new JPanel();
-        panel4.add(infoLabel);
-
         low.add(panel3);
-        low.add(panel4);
 
         northWest.add(low);
+        northWest.add(infoLabel);
     }
 
     private void setUpSouthWestSide(){
@@ -242,5 +241,9 @@ public class Window extends JPanel {
 
     public JLabel getAveGradeScore() {
         return aveGradeScore;
+    }
+
+    public JLabel getInfoLabel() {
+        return infoLabel;
     }
 }

@@ -74,6 +74,25 @@ public class Database {
         }
     }
 
+    public String getNameFromDatabase(int membershipNr){
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(
+                     "SELECT first_name, last_name FROM customers WHERE membership_nr = ?;")){
+
+            statement.setInt(1, membershipNr);
+            ResultSet results = statement.executeQuery();
+            results.next();
+            String fName = results.getString("first_name");
+            String lName = results.getString("last_name");
+            return (fName + " " + lName);
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public boolean addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");) {

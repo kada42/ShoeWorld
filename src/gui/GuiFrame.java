@@ -36,6 +36,7 @@ public class GuiFrame extends JFrame {
             boolean isCorrectPassword = c.checkCredentials(membershipNr,password);
             if(isCorrectPassword) {
                 c.setMembershipNr(membershipNr);
+                c.setTitleName();
                 break;
             }
             else JOptionPane.showMessageDialog(null,"Ni angav antingen fel medlemsnummer eller fel lösenord.");

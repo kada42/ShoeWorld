@@ -34,6 +34,11 @@ public class Controller {
         this.membershipNr = membershipNr;
     }
 
+    public void setTitleName(){
+        String name = db.getNameFromDatabase(membershipNr);
+        w.getNameLabel().setText("Hej " + name);
+    }
+
     public void setUpShoeSearchButtonListener(){
         w.getAllShoes().addActionListener(l -> {
             List<ShoeView> list = db.displayShoes();
