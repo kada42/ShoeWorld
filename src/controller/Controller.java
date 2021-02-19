@@ -80,15 +80,17 @@ public class Controller {
 
     public void setUpAddToCartListener(){
         w.getAddToCart().addActionListener(l -> {
+            int affectedRows;
             int articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
             if(w.getOrderNrFieldCartAdd().getText().isEmpty()){
-                db.addToCart(membershipNr,articleNr,0);
+                affectedRows = db.addToCart(membershipNr,articleNr,0);
             }
             else {
                 int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
-                db.addToCart(membershipNr, articleNr, orderNr);
+                affectedRows = db.addToCart(membershipNr, articleNr, orderNr);
             }
-
+            if(affectedRows == 0) w.getInfoLabel().setText("Could not add to cart. Please contact our service-desk.");
+            else w.getInfoLabel().setText("Successfully added to cart!");
             w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
         });
     }

@@ -4,7 +4,6 @@ import models.Message;
 import models.ShoeView;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class Database {
      */
     public boolean checkCredentials(int _membershipNr, String _password){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?)")){
+             PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?) AS ok;")){
 
             statement.setInt(1,_membershipNr);
             statement.setString(2,_password);
@@ -74,6 +73,11 @@ public class Database {
         }
     }
 
+    /**
+     * Method that fetches the name from customers depending on membership_nr
+     * @param membershipNr int that represents a membership_nr
+     * @return String with corresponding full name of that customer
+     */
     public String getNameFromDatabase(int membershipNr){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(
@@ -93,23 +97,22 @@ public class Database {
         }
     }
 
-    public boolean addToCart(int membershipNr, int shoeArticleNr, int orderID){
+    public int addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             CallableStatement cstmt = connection.prepareCall("{? = call AddToCart(?,?,?)}");) {
-            // AddToCart(customerID int, shoeID int, orderID int)
+             CallableStatement cstmt = connection.prepareCall("Call addToCart(?,?,?);")) {
 
             cstmt.setInt(1, membershipNr);
             cstmt.setInt(2, shoeArticleNr);
             cstmt.setInt(3, orderID);
 
-            boolean action = cstmt.execute();
-            System.out.println(action);
-            return action;
+            int rows = cstmt.executeUpdate();
+
+            return rows;
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
@@ -151,31 +154,17 @@ public class Database {
     }
 
     // Fixa denna function som login grejen
-    public String getLatestOrderNr(){   // måste testas i samband med "addToCart"
+    public String getLatestOrderNr(){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             CallableStatement cstmt = connection.prepareCall("{? = call getLatestOrderNr()}");){
-//            Preparing a CallableStatement to call a function
-//            CallableStatement cstmt = con.prepareCall("{? = call getDob(?)}");
+             PreparedStatement statement = connection.prepareStatement("SELECT getLatestOrderNr();")){
 
-
-//            Registering the out parameter of the function (return type)
-//            cstmt.registerOutParameter(1, Types.DATE);
-            cstmt.registerOutParameter(1, Types.INTEGER);
-
-//            Setting the input parameters of the function
-//            cstmt.setString(2, "Amit");
-
-//            Executing the statement
-//            cstmt.execute();
-            cstmt.execute();
-
-//            System.out.print("Date of birth: "+cstmt.getDate(1));
-            System.out.println("Latest order id = " + cstmt.getInt(1));
-            return cstmt.getString(1);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            return result.getString(1);
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
-            return "1337"; // Test siffra
+            return "0"; // Test siffra
         }
     }
 
