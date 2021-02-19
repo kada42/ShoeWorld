@@ -58,6 +58,7 @@ public class Database {
 
             result.next();
             boolean isCorrect = result.getBoolean(1);
+            System.out.println(isCorrect);
 
             result.close();
             return isCorrect;
