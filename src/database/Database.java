@@ -1,8 +1,10 @@
 package database;
 
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import models.Message;
 import models.ShoeView;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -108,9 +110,7 @@ public class Database {
             cstmt.setInt(2, shoeArticleNr);
             cstmt.setInt(3, orderID);
 
-            int rows = cstmt.executeUpdate();
-
-            return rows;
+            return cstmt.executeUpdate();
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -150,15 +150,37 @@ public class Database {
         }
     }
 
-    public void sendGrade(String shoeArticleNr, String comment){
-
+    /**
+     * Method that sends a review to the database
+     * @param text String containing the review text
+     * @param shoeArticleNr int that contains the shoe article nr
+     * @param customerID int containing the customers membership nr
+     * @param rate int the contains the current choice of rate point
+     * @return int affected rows in the database
+     */
+    public int sendGrade(String text, int shoeArticleNr, int customerID, int rate){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();) {
+             CallableStatement cstmt = connection.prepareCall("Call rate(?,?,?,?);")) {
 
+            cstmt.setString(1, text);
+            cstmt.setInt(2, shoeArticleNr);
+            cstmt.setInt(3, customerID);
+            cstmt.setInt(4, rate);
+
+            int rows = cstmt.executeUpdate();
+
+            return rows;
+
+        } catch (MysqlDataTruncation e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Comment can only be 50 characters long.");
+            return 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            return 0;
         }
-
     }
 
     public Message getAverageGrade(String shoeArticleNr){

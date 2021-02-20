@@ -18,7 +18,7 @@ public class Controller {
     Window w;
     Database db;
     int membershipNr;
-    int rater;
+    int rater = 1;
 
     public Controller(Window window){
         this.w = window;
@@ -29,6 +29,7 @@ public class Controller {
         setUpViewCartListener();
         setUpNewOrderListener();
         setUpRateRadioButtons();
+        setUpSendGradeListener();
     }
 
     public boolean checkCredentials(int _membershipNr, String _password){
@@ -41,7 +42,7 @@ public class Controller {
 
     public void setTitleName(){
         String name = db.getNameFromDatabase(membershipNr);
-        w.getNameLabel().setText("Hej " + name);
+        w.getNameLabel().setText(" Hej " + name +" och välkommen till Shoe World!");
     }
 
     public void setUpShoeSearchButtonListener(){
@@ -83,26 +84,26 @@ public class Controller {
         });
     }
 
-    public void setUpAddToCartListener(){
+    public void setUpAddToCartListener() {
         w.getAddToCart().addActionListener(l -> {
             int affectedRows;
             int articleNr;
-            try{
+            try {
                 articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
-            }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null,"Article number can only contain numbers.");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Article number can only contain numbers.");
                 return;
             }
 
-            if(w.getOrderNrFieldCartAdd().getText().isEmpty()){
-                affectedRows = db.addToCart(membershipNr,articleNr,0);
-            }
-            else {
+            if (w.getOrderNrFieldCartAdd().getText().isEmpty()) {
+                affectedRows = db.addToCart(membershipNr, articleNr, 0);
+            } else {
                 int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
                 affectedRows = db.addToCart(membershipNr, articleNr, orderNr);
             }
-            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not add to cart.\nPlease contact our service-desk.");
-            else JOptionPane.showMessageDialog(null,"Successfully added to cart!");
+            if (affectedRows == 0)
+                JOptionPane.showMessageDialog(null, "Could not add to cart.\nPlease contact our service-desk.");
+            else JOptionPane.showMessageDialog(null, "Successfully added to cart!");
             w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
         });
     }
@@ -136,7 +137,7 @@ public class Controller {
         });
     }
 
-   public void setUpRateRadioButtons(){
+    public void setUpRateRadioButtons(){
         for(JRadioButton rb : w.getRateButtons()){
             rb.addActionListener(l -> {
                 switch (rb.getText()) {
@@ -149,4 +150,21 @@ public class Controller {
         }
    }
 
+    public void setUpSendGradeListener(){
+        w.getSendGrade().addActionListener(l -> {
+            int articleNr;
+            String comment = w.getCommentGradeArea().getText();
+            try{
+                articleNr = Integer.parseInt(w.getArticleNrFieldGrade().getText().trim());
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Article number can only contain numbers.");
+                return;
+            }
+
+            int affectedRows = db.sendGrade(comment,articleNr,membershipNr,rater);
+
+            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not send review to the database.\nPlease contact our service-desk.");
+            else JOptionPane.showMessageDialog(null,"Successfully submitted review!");
+        });
+    }
 }
