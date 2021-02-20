@@ -31,6 +31,7 @@ public class Window extends JPanel {
     private final JButton sendGrade = new JButton("Send grade");
     private final JButton searchAveGrade = new JButton("Check grade");
     private final JButton viewCart = new JButton("View cart");
+    private final JButton newOrder = new JButton("Start new order");
 
     // Textfields
     private final JTextField articleNrFieldCartAdd = new JTextField(10);
@@ -41,7 +42,7 @@ public class Window extends JPanel {
     // Labels
     private final JLabel name = new JLabel("Hej name...");
     private final JLabel aveGradeScore = new JLabel("0");
-    private final JLabel infoLabel = new JLabel("Information regarding process", SwingConstants.CENTER);
+    // private final JLabel infoLabel = new JLabel("Information regarding process", SwingConstants.CENTER);
 
     // Font
     Font font = new Font(Font.SERIF,Font.BOLD,20);
@@ -128,7 +129,11 @@ public class Window extends JPanel {
         low.add(panel3);
 
         northWest.add(low);
-        northWest.add(infoLabel);
+
+        JPanel panel4 = new JPanel();
+        newOrder.setFont(new Font(Font.SERIF, Font.BOLD,20));
+        panel4.add(newOrder);
+        northWest.add(panel4);
     }
 
     private void setUpSouthWestSide(){
@@ -243,7 +248,15 @@ public class Window extends JPanel {
         return aveGradeScore;
     }
 
-    public JLabel getInfoLabel() {
-        return infoLabel;
+//    public JLabel getInfoLabel() {
+//        return infoLabel;
+//    }
+
+    public JButton getViewCart() {
+        return viewCart;
+    }
+
+    public JButton getNewOrder() {
+        return newOrder;
     }
 }

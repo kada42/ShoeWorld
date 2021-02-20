@@ -120,17 +120,35 @@ public class Database {
         }
     }
 
-    public List<String> checkCart(){
-        List<String> list = new ArrayList<>();
+    /**
+     * Method that loads a list with from the database with ShoeViews objects
+     * which are included in the current order
+     * @param orderNr int current order nr
+     * @return List<ShoeView> list
+     */
+    public List<ShoeView> checkCart(int orderNr){
+        List<ShoeView> list = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM show_client_order where orderNr = ?;")) {
 
+            statement.setInt(1,orderNr);
+            ResultSet r = statement.executeQuery();
+            while(r.next()){
+                list.add(new ShoeView(
+                        r.getInt("article_nr"),
+                        r.getString("brand"),
+                        r.getString("item_name"),
+                        r.getString("color"),
+                        r.getInt("size"),
+                        r.getString("order_date")));
+            }
+            r.close();
+            return list;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return list;
         }
-
-        return list;
     }
 
     public void sendGrade(String shoeArticleNr, String comment){

@@ -4,6 +4,7 @@ import database.Database;
 import gui.Window;
 import models.ShoeView;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -24,6 +25,8 @@ public class Controller {
         setUpShoeSearchButtonListener();
         setUpAllCategorySearchListener();
         setUpAddToCartListener();
+        setUpViewCartListener();
+        setUpNewOrderListener();
     }
 
     public boolean checkCredentials(int _membershipNr, String _password){
@@ -81,7 +84,14 @@ public class Controller {
     public void setUpAddToCartListener(){
         w.getAddToCart().addActionListener(l -> {
             int affectedRows;
-            int articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
+            int articleNr;
+            try{
+                articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Article number can only contain numbers.");
+                return;
+            }
+
             if(w.getOrderNrFieldCartAdd().getText().isEmpty()){
                 affectedRows = db.addToCart(membershipNr,articleNr,0);
             }
@@ -89,9 +99,38 @@ public class Controller {
                 int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
                 affectedRows = db.addToCart(membershipNr, articleNr, orderNr);
             }
-            if(affectedRows == 0) w.getInfoLabel().setText("Could not add to cart. Please contact our service-desk.");
-            else w.getInfoLabel().setText("Successfully added to cart!");
+            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not add to cart.\nPlease contact our service-desk.");
+            else JOptionPane.showMessageDialog(null,"Successfully added to cart!");
             w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
+        });
+    }
+
+    public void setUpViewCartListener(){
+        w.getViewCart().addActionListener(l -> {
+            int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText());
+            List<ShoeView> list = db.checkCart(orderNr);
+
+            w.getInfoWindow().setText("Row | Article nr | Brand  | Item name   | Color | Size | Order date\n");
+            w.getInfoWindow().append("-------------------------------------------------------------------\n");
+            int row = 1;
+            for (ShoeView i : list){
+                w.getInfoWindow().append(
+                        String.format("%-5d %-12d %-8s %-13s %-7s %-6d %-10s \n",
+                            row,
+                            i.getArticleNr(),
+                            i.getBrand(),
+                            i.getItemName(),
+                            i.getColor(),
+                            i.getSize(),
+                            i.getDate()));
+                row++;
+            }
+        });
+    }
+
+    public void setUpNewOrderListener(){
+        w.getNewOrder().addActionListener(l -> {
+            w.getOrderNrFieldCartAdd().setText("");
         });
     }
 
