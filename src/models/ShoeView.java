@@ -15,6 +15,7 @@ public class ShoeView {
     private final String color;
     private final int size;
     private final int currentStock;
+    private final String date;
 
     public ShoeView(String category, int articleNr, String brand, String itemName, String color, int size, int currentStock) {
         this.category = category;
@@ -24,6 +25,7 @@ public class ShoeView {
         this.color = color;
         this.size = size;
         this.currentStock = currentStock;
+        this.date = null;
     }
 
     public ShoeView(int articleNr, String brand, String itemName, String color, int size, int currentStock) {
@@ -34,6 +36,18 @@ public class ShoeView {
         this.color = color;
         this.size = size;
         this.currentStock = currentStock;
+        this.date = null;
+    }
+
+    public ShoeView(int articleNr, String brand, String itemName, String color, int size, String date) {
+        this.category = null;
+        this.articleNr = articleNr;
+        this.brand = brand;
+        this.itemName = itemName;
+        this.color = color;
+        this.size = size;
+        this.currentStock = 0;
+        this.date = date;
     }
 
     public String getCategory() {
@@ -62,5 +76,9 @@ public class ShoeView {
 
     public int getCurrentStock() {
         return currentStock;
+    }
+
+    public String getDate() {
+        return date;
     }
 }
