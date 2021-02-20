@@ -18,6 +18,7 @@ public class Controller {
     Window w;
     Database db;
     int membershipNr;
+    int rater;
 
     public Controller(Window window){
         this.w = window;
@@ -27,6 +28,7 @@ public class Controller {
         setUpAddToCartListener();
         setUpViewCartListener();
         setUpNewOrderListener();
+        setUpRateRadioButtons();
     }
 
     public boolean checkCredentials(int _membershipNr, String _password){
@@ -133,5 +135,18 @@ public class Controller {
             w.getOrderNrFieldCartAdd().setText("");
         });
     }
+
+   public void setUpRateRadioButtons(){
+        for(JRadioButton rb : w.getRateButtons()){
+            rb.addActionListener(l -> {
+                switch (rb.getText()) {
+                    case "Very satisfied" -> rater = 1;
+                    case "Satisfied" -> rater = 2;
+                    case "A little satisfied" -> rater = 3;
+                    default -> rater = 4;
+                }
+            });
+        }
+   }
 
 }

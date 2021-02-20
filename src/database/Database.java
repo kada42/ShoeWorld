@@ -44,21 +44,20 @@ public class Database {
 
     /**
      * Method that check in the database if the password is correct for a given membership number
-     * @param _membershipNr selfexplanatory
-     * @param _password selfexplanatory
+     * @param membershipNr selfexplanatory
+     * @param password selfexplanatory
      * @return boolean isCorrect
      */
-    public boolean checkCredentials(int _membershipNr, String _password){
+    public boolean checkCredentials(int membershipNr, String password){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              PreparedStatement statement = connection.prepareStatement("SELECT isPasswordCorrect(?,?);")){
 
-            statement.setInt(1,_membershipNr);
-            statement.setString(2,_password);
+            statement.setInt(1,membershipNr);
+            statement.setString(2,password);
             ResultSet result = statement.executeQuery();
 
             result.next();
             boolean isCorrect = result.getBoolean(1);
-            System.out.println(isCorrect);
 
             result.close();
             return isCorrect;

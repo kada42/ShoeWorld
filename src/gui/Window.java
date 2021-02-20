@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Tomas Dahlander <br>
@@ -42,7 +44,9 @@ public class Window extends JPanel {
     // Labels
     private final JLabel name = new JLabel("Hej name...");
     private final JLabel aveGradeScore = new JLabel("0");
-    // private final JLabel infoLabel = new JLabel("Information regarding process", SwingConstants.CENTER);
+
+    // Lists
+    private final List<JRadioButton> rateButtons = new ArrayList<>();
 
     // Font
     Font font = new Font(Font.SERIF,Font.BOLD,20);
@@ -137,7 +141,7 @@ public class Window extends JPanel {
     }
 
     private void setUpSouthWestSide(){
-        JPanel topPanel = new JPanel(new GridLayout(3,1));
+        JPanel topPanel = new JPanel(new GridLayout(4,1));
         topPanel.setBorder(new EtchedBorder());
 
         JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
@@ -155,13 +159,26 @@ public class Window extends JPanel {
         topPanel.add(grade);
         topPanel.add(high1);
 
+        List<String> grades = List.of("Very satisfied","Satisfied","A little satisfied","Not satisfied");
+        ButtonGroup group = new ButtonGroup();
         JPanel high2 = new JPanel();
+
+        for(String s : grades) rateButtons.add(new JRadioButton(s));
+
+        for(JRadioButton rb : rateButtons){
+            group.add(rb);
+            high2.add(rb);
+        }
+
+        topPanel.add(high2);
+
+        JPanel high3 = new JPanel();
         JLabel comment = new JLabel("Comment");
         comment.setFont(font);
-        high2.add(comment);
+        high3.add(comment);
         spComment.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        high2.add(spComment);
-        topPanel.add(high2);
+        high3.add(spComment);
+        topPanel.add(high3);
 
         southWest.add(topPanel);
 
@@ -248,15 +265,15 @@ public class Window extends JPanel {
         return aveGradeScore;
     }
 
-//    public JLabel getInfoLabel() {
-//        return infoLabel;
-//    }
-
     public JButton getViewCart() {
         return viewCart;
     }
 
     public JButton getNewOrder() {
         return newOrder;
+    }
+
+    public List<JRadioButton> getRateButtons() {
+        return rateButtons;
     }
 }
