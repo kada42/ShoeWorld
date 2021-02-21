@@ -24,7 +24,6 @@ public class Window extends JPanel {
     private final JScrollPane spWindow = new JScrollPane(infoWindow);
     private final JTextArea commentGradeArea = new JTextArea(2,30);
     private final JScrollPane spComment = new JScrollPane(commentGradeArea);
-    private final JTextArea searchCommentGradeArea = new JTextArea(2,30);
 
     // Buttons
     private final JButton allShoes = new JButton("View all shoes");
@@ -215,10 +214,6 @@ public class Window extends JPanel {
 
     public JTextArea getCommentGradeArea() {
         return commentGradeArea;
-    }
-
-    public JTextArea getSearchCommentGradeArea() {
-        return searchCommentGradeArea;
     }
 
     public JButton getAllShoes() {

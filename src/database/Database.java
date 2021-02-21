@@ -1,9 +1,7 @@
 package database;
 
 import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
-import models.Message;
-import models.Review;
-import models.ShoeView;
+import models.*;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -183,18 +181,29 @@ public class Database {
         }
     }
 
-    public List<Review> getAverageGrade(String shoeArticleNr){
-        List<Review> reviews = new ArrayList<>();
+    /**
+     * Method that loads a list with reviews from a specific shoe
+     * @param shoeArticleNr int containing the shoe article nr
+     * @return List<Review>
+     */
+    public List<Review> getReviews(int shoeArticleNr){
+        List<Review> list = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement()) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM shoe_reviews where shoe_article_nr = ?;")) {
 
-
-
+            statement.setInt(1,shoeArticleNr);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                list.add(new Review(rs.getString("review_text"),
+                        new Grade(rs.getString("grade"),rs.getInt("points"))));
+            }
+            rs.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        return reviews;
+        return list;
     }
 
     /**

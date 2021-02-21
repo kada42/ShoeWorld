@@ -10,13 +10,12 @@ public class Review {
 
     private int id;
     private final String reviewText;
-    private final Shoe shoeArticleNr;
+    private Shoe shoeArticleNr;
     private Customer customerID;
     private final Grade gradeID;
 
-    public Review(String reviewText, Shoe shoe, Grade grade){
+    public Review(String reviewText, Grade grade){
         this.reviewText = reviewText;
-        this.shoeArticleNr = shoe;
         this.gradeID = grade;
     }
 
