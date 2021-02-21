@@ -145,7 +145,7 @@ public class Window extends JPanel {
 
         JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
         grade.setFont(font);
-
+        
         JPanel high1 = new JPanel();
         JLabel articleNr = new JLabel("Article nr");
         articleNr.setFont(font);
