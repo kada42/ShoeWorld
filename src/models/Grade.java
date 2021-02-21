@@ -17,6 +17,11 @@ public class Grade {
     private String grade;
     private int points;
 
+    public Grade(String grade, int points){
+        this.grade = grade;
+        this.points = points;
+    }
+
     public int getId() {
         return id;
     }

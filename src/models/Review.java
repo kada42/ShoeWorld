@@ -9,10 +9,16 @@ package models;
 public class Review {
 
     private int id;
-    private String reviewText;
-    private Shoe shoeArticleNr;
+    private final String reviewText;
+    private final Shoe shoeArticleNr;
     private Customer customerID;
-    private Grade gradeID;
+    private final Grade gradeID;
+
+    public Review(String reviewText, Shoe shoe, Grade grade){
+        this.reviewText = reviewText;
+        this.shoeArticleNr = shoe;
+        this.gradeID = grade;
+    }
 
     public int getId() {
         return id;

@@ -8,13 +8,17 @@ package models;
  */
 public class Shoe {
 
-    private int articleNr;
+    private final int articleNr;
     private Brand brand;
     private String itemName;
     private String Color;
     private int priceSEK;
     private Size size;
     private int inStock;
+
+    public Shoe(int articleNr){
+        this.articleNr = articleNr;
+    }
 
     public int getArticleNr() {
         return articleNr;

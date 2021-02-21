@@ -2,6 +2,7 @@ package database;
 
 import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import models.Message;
+import models.Review;
 import models.ShoeView;
 
 import javax.swing.*;
@@ -143,11 +144,10 @@ public class Database {
                         r.getString("order_date")));
             }
             r.close();
-            return list;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return list;
         }
+        return list;
     }
 
     /**
@@ -183,17 +183,18 @@ public class Database {
         }
     }
 
-    public Message getAverageGrade(String shoeArticleNr){
-        Message message = new Message();
+    public List<Review> getAverageGrade(String shoeArticleNr){
+        List<Review> reviews = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
+
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
-        return message;
+        return reviews;
     }
 
     /**
@@ -220,12 +221,11 @@ public class Database {
      * @return List<ShowView> list
      */
     public List<ShoeView> displayShoes(){
+        List<ShoeView> list = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              Statement statement = connection.createStatement()) {
 
             ResultSet r = statement.executeQuery("SELECT * FROM shoe_search;");
-
-            List<ShoeView> list = new ArrayList<>();
 
             while(r.next()){
                 list.add(new ShoeView(
@@ -237,11 +237,10 @@ public class Database {
                         r.getInt("in_stock")));
             }
             r.close();
-            return list;
         }catch(SQLException e){
             System.out.println(e.getMessage());
-            return null;
         }
+        return list;
     }
 
     /**
@@ -250,12 +249,11 @@ public class Database {
      * @return List<ShowView> list
      */
     public List<ShoeView> displayShoesWithCategories(){
+        List<ShoeView> list = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              Statement statement = connection.createStatement()){
 
             ResultSet result = statement.executeQuery("SELECT * FROM category_search;");
-
-            List<ShoeView> list = new ArrayList<>();
 
             while(result.next()){
                 list.add(new ShoeView(
@@ -268,11 +266,10 @@ public class Database {
                         result.getInt("in_stock")));
             }
             result.close();
-            return list;
         }catch (SQLException e){
             System.out.println(e.getMessage());
-            return null;
         }
+        return list;
     }
 
 }
