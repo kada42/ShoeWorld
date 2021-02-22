@@ -70,6 +70,24 @@ public class Database {
         }
     }
 
+    public boolean doesShoeExist(int articleNr){
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement("SELECT doesShoeExist(?);")){
+
+            statement.setInt(1,articleNr);
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+            boolean exists = result.getBoolean(1);
+
+            result.close();
+            return exists;
+
+        }catch(SQLException e){
+            return false;
+        }
+    }
+
     /**
      * Method that fetches the name from customers depending on membership_nr
      * @param membershipNr int that represents a membership_nr
@@ -112,8 +130,6 @@ public class Database {
             return cstmt.executeUpdate();
 
         }catch(SQLException e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
             return 0;
         }
     }
@@ -124,7 +140,7 @@ public class Database {
      * @param orderNr int current order nr
      * @return List<ShoeView> list
      */
-    public List<ShoeView> checkCart(int orderNr){
+    public List<ShoeView> displayCart(int orderNr){
         List<ShoeView> list = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
@@ -172,7 +188,7 @@ public class Database {
         } catch (MysqlDataTruncation e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,"Comment can only be 50 characters long.");
+            JOptionPane.showMessageDialog(null,"Comment can only be 512 characters long.");
             return 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -196,7 +212,8 @@ public class Database {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 list.add(new Review(rs.getString("review_text"),
-                        new Grade(rs.getString("grade"),rs.getInt("points"))));
+                        new Grade(rs.getString("grade"),rs.getInt("points")),
+                        new Customer(rs.getString("first_name"),rs.getString("last_name"))));
             }
             rs.close();
         } catch (SQLException e) {

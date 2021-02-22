@@ -19,6 +19,12 @@ public class Review {
         this.gradeID = grade;
     }
 
+    public Review(String reviewText, Grade grade, Customer customer){
+        this.reviewText = reviewText;
+        this.gradeID = grade;
+        this.customerID = customer;
+    }
+
     public int getId() {
         return id;
     }

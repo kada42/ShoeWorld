@@ -31,7 +31,7 @@ public class Controller {
         setUpViewCartListener();
         setUpNewOrderListener();
         setUpRateRadioButtons();
-        setUpSendGradeListener();
+        setUpSubmitReviewListener();
         setUpSearchAveGradeListener();
     }
 
@@ -104,18 +104,23 @@ public class Controller {
                 int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
                 affectedRows = db.addToCart(membershipNr, articleNr, orderNr);
             }
-            if (affectedRows == 0)
-                JOptionPane.showMessageDialog(null, "Could not add to cart.\nPlease contact our service-desk.");
-            else JOptionPane.showMessageDialog(null, "Successfully added to cart!");
-            w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
+            if (affectedRows == 0) JOptionPane.showMessageDialog(null, "Could not add to cart.\nPlease contact our service-desk.");
+            else {
+                JOptionPane.showMessageDialog(null, "Successfully added to cart!");
+                w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
+            }
         });
     }
 
     public void setUpViewCartListener(){
         w.getViewCart().addActionListener(l -> {
+            if(w.getOrderNrFieldCartAdd().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null,"Couldn't detect an order nr. ");
+                return;
+            }
             int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
 
-            List<ShoeView> list = db.checkCart(orderNr);
+            List<ShoeView> list = db.displayCart(orderNr);
 
             w.getInfoWindow().setText("Row | Article nr | Brand  | Item name   | Color | Size | Order date\n");
             w.getInfoWindow().append("-------------------------------------------------------------------\n");
@@ -154,24 +159,24 @@ public class Controller {
         }
    }
 
-    public void setUpSendGradeListener(){
+    public void setUpSubmitReviewListener(){
         w.getSendGrade().addActionListener(l -> {
-            if(rater == 0) {
-                JOptionPane.showMessageDialog(null,"You must choose a rating from the 4 options.");
-                return;
-            }
             int articleNr;
-            String comment = w.getCommentGradeArea().getText();
             try{
                 articleNr = Integer.parseInt(w.getArticleNrFieldGrade().getText().trim());
             }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(null,"Article number can only contain numbers.");
                 return;
             }
+            if(rater == 0) {
+                JOptionPane.showMessageDialog(null,"You must choose a rating from the 4 options.");
+                return;
+            }
+            String comment = w.getCommentGradeArea().getText();
 
             int affectedRows = db.sendGrade(comment,articleNr,membershipNr,rater);
 
-            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not send review to the database.\nPlease contact our service-desk.");
+            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not submit review.\nPlease contact our service-desk.");
             else JOptionPane.showMessageDialog(null,"Successfully submitted review!");
         });
     }
@@ -187,19 +192,27 @@ public class Controller {
             }
 
             List<Review> list = db.getReviews(articleNr);
+
+            if(!db.doesShoeExist(articleNr)){
+                JOptionPane.showMessageDialog(null,"Article number does not exist.");
+                return;
+            }
+            if(list.size() == 0) {
+                JOptionPane.showMessageDialog(null,"No reviews were found on product.");
+                return;
+            }
             w.getInfoWindow().setText("");
             for(Review r : list){
+                w.getInfoWindow().append(r.getCustomerID().getFullName() + " - ");
                 w.getInfoWindow().append(r.getGradeID().getGrade() + " - ");
                 appendStars(r.getGradeID().getPoints());
                 w.getInfoWindow().append(r.getReviewText() + "\n");
                 w.getInfoWindow().append("-------------------------------------------------------------------------\n");
             }
-            try {
                 double averageGrade = list.stream().mapToInt(r -> r.getGradeID().getPoints()).average().getAsDouble();
                 if(averageGrade % 1 == 0) w.getAveGradeScore().setText(String.format("%.0f",averageGrade));
-                else if(averageGrade % 0.10 == 0) w.getAveGradeScore().setText(String.format("%.1f",averageGrade)); // den räknar ej rätt på modulus här
+                else if(averageGrade % 0.1 > 0.0999998) w.getAveGradeScore().setText(String.format("%.1f",averageGrade));
                 else w.getAveGradeScore().setText(String.format("%.2f",averageGrade));
-            }catch(NoSuchElementException ignored){ }
         });
     }
 

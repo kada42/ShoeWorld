@@ -19,8 +19,8 @@ public class GuiFrame extends JFrame {
         c = new Controller(window);
         this.add(window);
 
-        int membershipNr = 0;
-        String password = "";
+        int membershipNr;
+        String password;
 
         while(true){
             try {
@@ -33,8 +33,7 @@ public class GuiFrame extends JFrame {
                 JOptionPane.showMessageDialog(null,"Ni måste ange medlemsnummer med siffror.");
                 continue;
             }
-            boolean isCorrectPassword = c.checkCredentials(membershipNr,password);
-            if(isCorrectPassword) {
+            if(c.checkCredentials(membershipNr,password)) {
                 c.setMembershipNr(membershipNr);
                 c.setTitleName();
                 break;

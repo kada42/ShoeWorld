@@ -9,12 +9,21 @@ package models;
 public class Customer {
 
     private int membershipNr;
-    private String firstName;
-    private String lastName;
+    private final String firstName;
+    private final String lastName;
     private String streetAddress;
     private String zipCode;
     private String city;
     private String password;
+
+    public Customer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 
     public int getMembershipNr() {
         return membershipNr;
