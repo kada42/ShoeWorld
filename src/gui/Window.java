@@ -42,7 +42,7 @@ public class Window extends JPanel {
 
     // Labels
     private final JLabel name = new JLabel("Hej name...");
-    private final JLabel aveGradeScore = new JLabel("0");
+    private final JLabel aveGradeScore = new JLabel("");
 
     // Lists
     private final List<JRadioButton> rateButtons = new ArrayList<>();

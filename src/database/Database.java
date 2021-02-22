@@ -70,6 +70,11 @@ public class Database {
         }
     }
 
+    /**
+     * Method that checks if a given article number exists in the database
+     * @param articleNr int containing article nr
+     * @return boolean true if it exists
+     */
     public boolean doesShoeExist(int articleNr){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              PreparedStatement statement = connection.prepareStatement("SELECT doesShoeExist(?);")){
@@ -119,7 +124,7 @@ public class Database {
      * @param orderID int an orders order_nr
      * @return int indicating amount of rows affected
      */
-    public int addToCart(int membershipNr, int shoeArticleNr, int orderID){
+    public boolean addToCart(int membershipNr, int shoeArticleNr, int orderID){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("Call addToCart(?,?,?);")) {
 
@@ -127,10 +132,10 @@ public class Database {
             cstmt.setInt(2, shoeArticleNr);
             cstmt.setInt(3, orderID);
 
-            return cstmt.executeUpdate();
+            return cstmt.execute();
 
         }catch(SQLException e){
-            return 0;
+            return true;
         }
     }
 
@@ -172,7 +177,7 @@ public class Database {
      * @param rate int the contains the current choice of rate point
      * @return int affected rows in the database
      */
-    public int sendGrade(String text, int shoeArticleNr, int customerID, int rate){
+    public boolean sendGrade(String text, int shoeArticleNr, int customerID, int rate){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              CallableStatement cstmt = connection.prepareCall("Call rate(?,?,?,?);")) {
 
@@ -181,19 +186,14 @@ public class Database {
             cstmt.setInt(3, customerID);
             cstmt.setInt(4, rate);
 
-            int rows = cstmt.executeUpdate();
-
-            return rows;
+            return cstmt.execute();
 
         } catch (MysqlDataTruncation e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null,"Comment can only be 512 characters long.");
-            return 0;
+            return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return 0;
+            JOptionPane.showMessageDialog(null,"Article number does not exist.");
+            return true;
         }
     }
 
@@ -237,7 +237,8 @@ public class Database {
 
         }catch(SQLException e){
             System.out.println(e.getMessage());
-            return "0"; // Wrong input that can be changed on later try
+            e.printStackTrace();
+            return "0";
         }
     }
 
@@ -265,6 +266,7 @@ public class Database {
             r.close();
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return list;
     }
@@ -294,8 +296,8 @@ public class Database {
             result.close();
         }catch (SQLException e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return list;
     }
-
 }

@@ -7,7 +7,6 @@ import models.ShoeView;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Created by Tomas Dahlander <br>
@@ -89,7 +88,7 @@ public class Controller {
 
     public void setUpAddToCartListener() {
         w.getAddToCart().addActionListener(l -> {
-            int affectedRows;
+            boolean problemOccurred;
             int articleNr;
             try {
                 articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
@@ -99,13 +98,13 @@ public class Controller {
             }
 
             if (w.getOrderNrFieldCartAdd().getText().isEmpty()) {
-                affectedRows = db.addToCart(membershipNr, articleNr, 0);
+                problemOccurred = db.addToCart(membershipNr, articleNr, 0);
             } else {
                 int orderNr = Integer.parseInt(w.getOrderNrFieldCartAdd().getText().trim());
-                affectedRows = db.addToCart(membershipNr, articleNr, orderNr);
+                problemOccurred = db.addToCart(membershipNr, articleNr, orderNr);
             }
-            if (affectedRows == 0) JOptionPane.showMessageDialog(null, "Could not add to cart.\nPlease contact our service-desk.");
-            else {
+            if (problemOccurred) JOptionPane.showMessageDialog(null, "Could not add to cart.\nPlease contact our service-desk.");
+            else{
                 JOptionPane.showMessageDialog(null, "Successfully added to cart!");
                 w.getOrderNrFieldCartAdd().setText(db.getLatestOrderNr());
             }
@@ -141,9 +140,7 @@ public class Controller {
     }
 
     public void setUpNewOrderListener(){
-        w.getNewOrder().addActionListener(l -> {
-            w.getOrderNrFieldCartAdd().setText("");
-        });
+        w.getNewOrder().addActionListener(l -> w.getOrderNrFieldCartAdd().setText(""));
     }
 
     public void setUpRateRadioButtons(){
@@ -174,9 +171,9 @@ public class Controller {
             }
             String comment = w.getCommentGradeArea().getText();
 
-            int affectedRows = db.sendGrade(comment,articleNr,membershipNr,rater);
+            boolean problemOccurred = db.sendGrade(comment,articleNr,membershipNr,rater);
 
-            if(affectedRows == 0) JOptionPane.showMessageDialog(null,"Could not submit review.\nPlease contact our service-desk.");
+            if(problemOccurred) JOptionPane.showMessageDialog(null,"Could not submit review.\nPlease contact our service-desk.");
             else JOptionPane.showMessageDialog(null,"Successfully submitted review!");
         });
     }
