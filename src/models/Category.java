@@ -1,19 +1,21 @@
+package models;
+
 /**
  * Created by Karl Danielsson - JAVA 20B
  * Date: 2021-02-05
- * Time: 15:53
+ * Time: 15:56
  * Project: ShoeWorld
  */
-public class Brand {
+public class Category {
 
     private int id;
-    private String brand;
+    private String category;
 
     public int getId() {
         return id;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getCategory() {
+        return category;
     }
 }

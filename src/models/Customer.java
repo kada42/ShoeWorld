@@ -1,3 +1,5 @@
+package models;
+
 /**
  * Created by Karl Danielsson - JAVA 20B
  * Date: 2021-02-05
@@ -7,11 +9,21 @@
 public class Customer {
 
     private int membershipNr;
-    private String firstName;
-    private String lastName;
+    private final String firstName;
+    private final String lastName;
     private String streetAddress;
     private String zipCode;
     private String city;
+    private String password;
+
+    public Customer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 
     public int getMembershipNr() {
         return membershipNr;
@@ -35,5 +47,9 @@ public class Customer {
 
     public String getCity() {
         return city;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
