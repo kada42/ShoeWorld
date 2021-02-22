@@ -29,8 +29,8 @@ public class Window extends JPanel {
     private final JButton allShoes = new JButton("View all shoes");
     private final JButton allCategories = new JButton("View all shoes with categories");
     private final JButton addToCart = new JButton("Add to cart");
-    private final JButton sendGrade = new JButton("Send grade");
-    private final JButton searchAveGrade = new JButton("Check grade");
+    private final JButton sendGrade = new JButton("Send review");
+    private final JButton searchAveGrade = new JButton("See reviews");
     private final JButton viewCart = new JButton("View cart");
     private final JButton newOrder = new JButton("Start new order");
 
@@ -74,7 +74,7 @@ public class Window extends JPanel {
     }
 
     private void setUpEastSide(){
-        spWindow.setPreferredSize(new Dimension(500,700));
+        spWindow.setPreferredSize(new Dimension(500,730));
         spWindow.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         east.add(spWindow);
         infoWindow.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
@@ -127,7 +127,6 @@ public class Window extends JPanel {
         JPanel panel3 = new JPanel();
         addToCart.setFont(new Font(Font.SERIF,Font.BOLD,40));
         panel3.add(addToCart);
-        panel3.add(viewCart);
 
         low.add(panel3);
 
@@ -136,6 +135,8 @@ public class Window extends JPanel {
         JPanel panel4 = new JPanel();
         newOrder.setFont(new Font(Font.SERIF, Font.BOLD,20));
         panel4.add(newOrder);
+        viewCart.setFont(new Font(Font.SERIF, Font.BOLD,20));
+        panel4.add(viewCart);
         northWest.add(panel4);
     }
 
@@ -143,7 +144,7 @@ public class Window extends JPanel {
         JPanel topPanel = new JPanel(new GridLayout(4,1));
         topPanel.setBorder(new EtchedBorder());
 
-        JLabel grade = new JLabel("Grade product", SwingConstants.CENTER);
+        JLabel grade = new JLabel("Review product", SwingConstants.CENTER);
         grade.setFont(font);
 
         JPanel high1 = new JPanel();
@@ -184,7 +185,7 @@ public class Window extends JPanel {
         JPanel lowPanel = new JPanel(new GridLayout(3,1));
         lowPanel.setBorder(new EtchedBorder());
 
-        JLabel checkAveGrade = new JLabel("Check average grade", SwingConstants.CENTER);
+        JLabel checkAveGrade = new JLabel("Check reviews", SwingConstants.CENTER);
         checkAveGrade.setFont(font);
         lowPanel.add(checkAveGrade);
         southWest.add(lowPanel);

@@ -93,7 +93,12 @@ public class Controller {
             try {
                 articleNr = Integer.parseInt(w.getArticleNrFieldCartAdd().getText().trim());
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Article number can only contain numbers.");
+                JOptionPane.showMessageDialog(null,"Article number can only contain numbers.");
+                return;
+            }
+
+            if(!db.doesShoeExist(articleNr)) {
+                JOptionPane.showMessageDialog(null,"Article number does not exist.");
                 return;
             }
 
@@ -204,7 +209,7 @@ public class Controller {
                 w.getInfoWindow().append(r.getGradeID().getGrade() + " - ");
                 appendStars(r.getGradeID().getPoints());
                 w.getInfoWindow().append(r.getReviewText() + "\n");
-                w.getInfoWindow().append("-------------------------------------------------------------------------\n");
+                w.getInfoWindow().append("---------------------------------------------------------------------------\n");
             }
                 double averageGrade = list.stream().mapToInt(r -> r.getGradeID().getPoints()).average().getAsDouble();
                 if(averageGrade % 1 == 0) w.getAveGradeScore().setText(String.format("%.0f",averageGrade));
