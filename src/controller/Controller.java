@@ -211,10 +211,12 @@ public class Controller {
                 w.getInfoWindow().append(r.getReviewText() + "\n");
                 w.getInfoWindow().append("---------------------------------------------------------------------------\n");
             }
-                double averageGrade = list.stream().mapToInt(r -> r.getGradeID().getPoints()).average().getAsDouble();
-                if(averageGrade % 1 == 0) w.getAveGradeScore().setText(String.format("%.0f",averageGrade));
-                else if(averageGrade % 0.1 > 0.0999998) w.getAveGradeScore().setText(String.format("%.1f",averageGrade));
-                else w.getAveGradeScore().setText(String.format("%.2f",averageGrade));
+            double averageGrade = list.stream().mapToInt(r -> r.getGradeID().getPoints()).average().getAsDouble();
+            String grade = db.getAverageGrade(averageGrade);
+
+            if(averageGrade % 1 == 0) w.getAveGradeScore().setText(String.format("%.0f  -  %s",averageGrade,grade));
+            else if(averageGrade % 0.1 > 0.0999998) w.getAveGradeScore().setText(String.format("%.1f  -  %s",averageGrade, grade));
+            else w.getAveGradeScore().setText(String.format("%.2f  -  %s",averageGrade, grade));
         });
     }
 

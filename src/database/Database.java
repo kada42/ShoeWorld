@@ -242,6 +242,22 @@ public class Database {
         }
     }
 
+    public String getAverageGrade(double score){
+        try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement("SELECT getAverageGrade(?);")){
+
+            statement.setDouble(1,score);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            return result.getString(1);
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     /**
      * Method that loads a list from the database with ShoeViews objects
      * to display in a textarea without the categories
