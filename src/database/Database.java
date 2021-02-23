@@ -242,6 +242,11 @@ public class Database {
         }
     }
 
+    /**
+     * Method that retrieves the average grade in a text
+     * @param score double that contains the average score
+     * @return String containing the average text
+     */
     public String getAverageGrade(double score){
         try (Connection connection = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
              PreparedStatement statement = connection.prepareStatement("SELECT getAverageGrade(?);")){
